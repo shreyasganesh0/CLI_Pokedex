@@ -2,7 +2,6 @@ package main
 
 import(
     "unicode"
-    "fmt"
     "strings"
 )
 
@@ -33,7 +32,6 @@ func removeWhitespace(text string) []string{
             addflag = false
         }
     }
-    fmt.Printf("this is the newstring %v", newstring);
     return newstring
 }
 
@@ -51,7 +49,6 @@ func removeLeadingWhitespace(text string) string{
     var last_char_pos int
     runes := []rune(text)
     for idx_end := idx_start;idx_end < original_len;idx_end++{
-       fmt.Printf("rune is %v", runes[idx_end]) 
         if unicode.IsSpace(runes[idx_end]) {
             continue
         } else{
@@ -59,7 +56,6 @@ func removeLeadingWhitespace(text string) string{
         }
     }
     newstring = text[idx_start:last_char_pos+1]
-    fmt.Printf("this is the result after removing whitespace: %v", newstring)
     return newstring
 }
         
