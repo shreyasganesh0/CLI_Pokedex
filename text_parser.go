@@ -19,7 +19,6 @@ func removeWhitespace(text string) []string{
     addflag := false
     var tempstring string
     for _, char = range text{
-            
         if !unicode.IsSpace(char){
             tempstring += string(char)
             addflag = true
@@ -32,6 +31,11 @@ func removeWhitespace(text string) []string{
             addflag = false
         }
     }
+    if tempstring != ""{
+            newstring = append(newstring, tempstring)
+            tempstring = ""
+            addflag = false
+        }
     return newstring
 }
 
