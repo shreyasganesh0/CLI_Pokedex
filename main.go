@@ -11,9 +11,17 @@ type Commands struct{
     desc string
     callback func() error
 }
-var commandMap map[string]Commands
+
+type Pagination struct{
+    next string
+    prev string
+}
+
+var commandDict map[string]Commands
+var apiMap map[string]*Pagination
+
 func init(){
- commandMap = map[string]Commands {
+ commandDict = map[string]Commands {
     "help":{ name: "help",
              desc: "Displays a help message",
              callback: commandHelp,
@@ -22,8 +30,21 @@ func init(){
              desc: "Exit the Pokedex",
              callback: commandExit,
          },
+     "mapb":{name: "mapb",
+             desc: "List previous 20 locations listed in map command.",
+             callback: commandMapb,
+         },
+     "map":{name: "map",
+             desc: "List 20 locations - will keep track of the locations displayed,\nnext call will display the next list of 20 locations.\nRead mapb for previous 20 locations",
+             callback: commandMap,
+         },
      }
- }
+apiMap = map[string]*Pagination {
+    "map":{ next: "https://pokeapi.co/api/v2/location-area",
+            prev: "",
+        },
+    }
+}
 
 func main(){
     reader := bufio.NewReader(os.Stdin)
@@ -38,7 +59,7 @@ func main(){
         }
         line = line[:len(line)-1]
         text = cleanInput(line)
-        if cmd, exists := commandMap[text[0]]; exists {
+        if cmd, exists := commandDict[text[0]]; exists {
             if err := cmd.callback(); err != nil{
                 fmt.Printf("Error in command callback, %s \n %v ", text[0], err)
             }
