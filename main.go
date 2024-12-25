@@ -4,7 +4,8 @@ import (
     "fmt"
     "bufio"
     "os"
-    "github.com/shreyasgaensh0/Caching"
+    "time"
+    "github.com/shreyasganesh0/caching"
 )
 
 type Commands struct{
@@ -20,7 +21,7 @@ type Pagination struct{
 
 var commandDict map[string]Commands
 var apiMap map[string]*Pagination
-
+var cache *caching.Cache
 func init(){
  commandDict = map[string]Commands {
     "help":{ name: "help",
@@ -45,7 +46,7 @@ func init(){
             prev: "",
         },
     }
- cache = caching.NewCache(5* time.Second) 
+ cache = caching.CreateCache(5* time.Second) 
 }
 
 func main(){

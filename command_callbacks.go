@@ -5,7 +5,6 @@ import(
     "os"
     "net/http"
     "encoding/json"
-    "github.com/shreyasgaensh0/Caching"
 )
 
 
@@ -66,8 +65,8 @@ func commandMap() error{
     }
 
     var locations Location
-    
-    chaceval,exists := cache.Get(fullPath)
+     
+    cacheval, exists := cache.Get(fullPath)
 
     if !exists{
 
@@ -75,14 +74,14 @@ func commandMap() error{
             return err
         }
 
-        cacheMarshVal, err := json.Marshal(locations))
-        if err{
+        cacheMarshVal, err := json.Marshal(locations)
+        if err != nil{
             return err
         }
         cache.Add(fullPath, cacheMarshVal)
 
     }else{
-        if err := json.Unmarshal(cacheval, &locations); err{
+        if err := json.Unmarshal(cacheval, &locations); err != nil{
             return err
         }
     }
@@ -111,7 +110,7 @@ func commandMapb() error{
 
         var locations Location
 
-        chaceval,exists := cache.Get(fullPath)
+        cacheval,exists := cache.Get(fullPath)
 
         if !exists{
 
@@ -119,14 +118,14 @@ func commandMapb() error{
                 return err
             }
 
-            cacheMarshVal, err := json.Marshal(locations))
-            if err{
+            cacheMarshVal, err := json.Marshal(locations)
+            if err != nil{
                 return err
             }
             cache.Add(fullPath, cacheMarshVal)
 
         }else{
-            if err := json.Unmarshal(cacheval, &locations); err{
+            if err := json.Unmarshal(cacheval, &locations); err != nil{
                 return err
             }
         }

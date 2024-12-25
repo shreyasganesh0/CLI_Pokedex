@@ -1,2 +1,8 @@
-github.com/shreyasganesh0/Caching v1.0.0 h1:4DY0jQdCiCZNk1pXAeroyPio0Dh9F0Tm4H+yeHy0moc=
-github.com/shreyasganesh0/Caching v1.0.0/go.mod h1:UvKSnpn5mNFDhO4iw5RQqcPffStAVlNukZUdPJOXaUM=
+github.com/shreyasganesh0/caching v1.0.0 h1:4DY0jQdCiCZNk1pXAeroyPio0Dh9F0Tm4H+yeHy0moc=
+github.com/shreyasganesh0/caching v1.0.0/go.mod h1:UvKSnpn5mNFDhO4iw5RQqcPffStAVlNukZUdPJOXaUM=
+github.com/shreyasganesh0/caching v1.0.1 h1:SS6uSOOZepEPI+JQ5O46K1hDFYS5KRemhm8CcdzGoJI=
+github.com/shreyasganesh0/caching v1.0.1/go.mod h1:J4LLxOdIeedCzraVddU8IVEU13a2V+rRjG9MdlTpzJM=
+github.com/shreyasganesh0/caching v1.0.2 h1:lD3u6eZWUNdNagkCeMrvvIxUaxf70gklcGMOgYahVyk=
+github.com/shreyasganesh0/caching v1.0.2/go.mod h1:J4LLxOdIeedCzraVddU8IVEU13a2V+rRjG9MdlTpzJM=
+github.com/shreyasganesh0/caching v1.0.3 h1:SRXcvFTnNcRWE8s+bvUiQbdD+xjnDew1tLxqOVaBA9I=
+github.com/shreyasganesh0/caching v1.0.3/go.mod h1:J4LLxOdIeedCzraVddU8IVEU13a2V+rRjG9MdlTpzJM=
