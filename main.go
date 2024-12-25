@@ -4,6 +4,7 @@ import (
     "fmt"
     "bufio"
     "os"
+    "github.com/shreyasgaensh0/Caching"
 )
 
 type Commands struct{
@@ -39,11 +40,12 @@ func init(){
              callback: commandMap,
          },
      }
-apiMap = map[string]*Pagination {
+ apiMap = map[string]*Pagination {
     "map":{ next: "https://pokeapi.co/api/v2/location-area",
             prev: "",
         },
     }
+ cache = caching.NewCache(5* time.Second) 
 }
 
 func main(){

@@ -5,6 +5,7 @@ import(
     "os"
     "net/http"
     "encoding/json"
+    "github.com/shreyasgaensh0/Caching"
 )
 
 
@@ -65,9 +66,25 @@ func commandMap() error{
     }
 
     var locations Location
+    
+    chaceval,exists := cache.Get(fullPath)
 
-    if err := apiResp(fullPath, &locations); err != nil{
-        return err
+    if !exists{
+
+        if err := apiResp(fullPath, &locations); err != nil{
+            return err
+        }
+
+        cacheMarshVal, err := json.Marshal(locations))
+        if err{
+            return err
+        }
+        cache.Add(fullPath, cacheMarshVal)
+
+    }else{
+        if err := json.Unmarshal(cacheval, &locations); err{
+            return err
+        }
     }
 
     for _,location := range locations.Results{
@@ -93,6 +110,26 @@ func commandMapb() error{
     }else{
 
         var locations Location
+
+        chaceval,exists := cache.Get(fullPath)
+
+        if !exists{
+
+            if err := apiResp(fullPath, &locations); err != nil{
+                return err
+            }
+
+            cacheMarshVal, err := json.Marshal(locations))
+            if err{
+                return err
+            }
+            cache.Add(fullPath, cacheMarshVal)
+
+        }else{
+            if err := json.Unmarshal(cacheval, &locations); err{
+                return err
+            }
+        }
 
         if err := apiResp(fullPath, &locations); err != nil{
             return err
