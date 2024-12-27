@@ -219,7 +219,7 @@ func commandCatch() error{
     pokemonData.CaptureRate = tempCaptureRate.CaptureRate
 
     for ;captured == false; {
-
+        fmt.Printf("Throwing a Pokeball at %s...\n", pokemonData.Name)
         randomValue := rand.Intn(100) + 1 //generate a random number from 1.., 100
 
         if randomValue <= pokemonData.CaptureRate{
@@ -296,3 +296,12 @@ func commandInspect() error{
     }
     return nil
 }
+
+func commandPokedex() error{
+    fmt.Printf("Your Pokedex:")
+    for pokemonName,_ := range capturedMap{
+        fmt.Printf(" -%s\n", pokemonName)
+    }
+    return nil
+}
+

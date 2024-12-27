@@ -53,6 +53,10 @@ func init(){
              desc: "Get details for captured Pokemon",
              callback: commandInspect,
          },
+     "pokedex":{name: "pokedex",
+             desc: "List all captured Pokemon",
+             callback: commandPokedex,
+         },
      }
  apiMap = map[string]*Pagination {
     "map":{ next: "https://pokeapi.co/api/v2/location-area",
