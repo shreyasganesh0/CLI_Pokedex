@@ -1,12 +1,16 @@
 package main
 
 import(
+    "strings"
     "fmt"
     "os"
     "net/http"
     "encoding/json"
+    "time"
+    "math/rand"
 )
 
+var capturedMap map[string]Pokemon
 
 type Result struct{
     Name string `json:"name"`
@@ -22,8 +26,30 @@ type PokemonEncounter struct{
     Pokemon Pokemon `json:"pokemon"`
 }
 
+type Type struct{
+    Type Type_sub `json:"type"`
+}
+
+type Type_sub struct{
+    Name string `json:"name"`
+}
+
+type Stat struct{
+    Basestat int `json:"base_stat"`
+    Stat Stat_sub `json:"stat"`
+}
+
+type Stat_sub struct{
+    Name string `json:"name"`
+}
+
 type Pokemon struct{
     Name string `json:"name"`
+    Height int `json:"height"`
+    Weight int `json:"weight"`
+    Stats []Stat `json:"stats"`
+    Types []Type `json:"types"`
+    CaptureRate int `json:"capture_rate"`
 }
 
 type LocationArea struct{
@@ -138,7 +164,7 @@ func commandMapb() error{
 }
 func commandExplore() error{
     
-    area := secondParamMap["explore"]["area"] 
+    area, _ := secondParamMap["explore"] 
 
     fmt.Printf("Exploring %s\n", area) 
 
@@ -159,7 +185,93 @@ func commandExplore() error{
     return nil
 }
 
+func commandCatch() error{
 
+    pokemon,_ := secondParamMap["catch"]
 
+    getPokemonDataApiBase := "https://pokeapi.co/api/v2/pokemon/"
     
+    fullPath := getPokemonDataApiBase + pokemon + "/"
+    
+    var pokemonData Pokemon
+    
+    if err:= apiResp(fullPath, &pokemonData); err != nil{
+        return err
+    }
 
+    captured := false
+
+    var seed int64 = time.Now().UnixNano()
+
+    rand.Seed(seed)
+    
+    captureRateApiBase := "https://pokeapi.co/api/v2/pokemon-species/"
+
+    captureRateApiPath := captureRateApiBase + pokemon + "/"
+
+    var tempCaptureRate struct{
+        CaptureRate int `json:"capture_rate"`
+    }
+
+    if err:= apiResp(captureRateApiPath, &tempCaptureRate); err != nil{
+        return err
+    }
+    pokemonData.CaptureRate = tempCaptureRate.CaptureRate
+
+    for ;captured == false; {
+
+        randomValue := rand.Intn(100) + 1 //generate a random number from 1.., 100
+
+        if randomValue <= pokemonData.CaptureRate{
+            captured = true
+            var i int
+            for ;i<3;i++{
+                dots := strings.Repeat(".", i+1) 
+                fmt.Printf("%s\n", dots)
+                time.Sleep(time.Second)
+            }
+            if _, exists := capturedMap[pokemonData.Name]; !exists{
+                capturedMap[pokemonData.Name] = pokemonData // disk persistence maybe if login implemented?
+                fmt.Printf("%s has been caught! Data has been added to the Pokedex\n", pokemonData.Name)
+            }else{
+                fmt.Printf("%s has been caught!\n", pokemonData.Name)
+            }
+        } else{
+            
+            
+            blockSize := (100 - pokemonData.CaptureRate) / 3
+            if blockSize == 0 {
+            blockSize = 1 // Avoid division by zero
+            }
+            blockPos := (randomValue - pokemonData.CaptureRate) / blockSize
+
+            var i int
+            for ;i < blockPos;i++ {
+                dots := strings.Repeat(".", i+1) 
+                fmt.Printf("%s\n", dots)
+                time.Sleep(time.Second)
+            }
+            if i == 2{
+                fmt.Printf("So close ... Maybe the next one will get it!\nWould you like to try again (y/n)?\n")
+            }else{
+                fmt.Printf("It broke free. Would you like to try again (y/n)?\n")
+            }
+
+            var input string
+            for {
+                fmt.Scanln(&input) // Reads a single input until newline
+                if input == "y"{
+                   break 
+                }
+                if input == "n"{
+                    captured = true
+                    break
+                }else{
+                    fmt.Println("Invalid choice type 'y' or 'n' in lower or uppercase only.\n")
+                }
+            }
+            
+        }
+    }
+    return nil
+}

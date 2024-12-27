@@ -22,7 +22,7 @@ type Pagination struct{
 var commandDict map[string]Commands
 var apiMap map[string]*Pagination
 var cache *caching.Cache
-var secondParamMap map[string]map[string]string
+var secondParamMap map[string]string
 func init(){
  commandDict = map[string]Commands {
     "help":{ name: "help",
@@ -45,17 +45,23 @@ func init(){
              desc: "Lists available pokemon in the given area",
              callback: commandExplore,
          },
+     "catch":{name: "catch",
+             desc: "Try to capture a pokemon",
+             callback: commandCatch,
+         },
      }
  apiMap = map[string]*Pagination {
     "map":{ next: "https://pokeapi.co/api/v2/location-area",
             prev: "",
         },
     }
-secondParamMap = map[string]map[string]string{
-    "explore":{"area": "",
-        },
+secondParamMap = map[string]string{
+    "explore": "",
+    "catch": "",    
     }
- cache = caching.CreateCache(5* time.Second) 
+cache = caching.CreateCache(5* time.Second) 
+ 
+capturedMap = make(map[string]Pokemon)
 }
 
 func main(){
@@ -73,7 +79,9 @@ func main(){
         text = cleanInput(line)
         if cmd, exists := commandDict[text[0]]; exists {
             if cmd.name == "explore"{
-               secondParamMap["explore"]["area"] = text[1] 
+               secondParamMap["explore"] = text[1] 
+            }else if cmd.name == "catch"{
+                secondParamMap["catch"] = text[1]
             }
             if err := cmd.callback(); err != nil{
                 fmt.Printf("Error in command callback, %s \n %v ", text[0], err)
