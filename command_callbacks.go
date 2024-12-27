@@ -275,3 +275,24 @@ func commandCatch() error{
     }
     return nil
 }
+
+func commandInspect() error{
+    var pokemon Pokemon
+    var exists bool
+    if pokemon, exists = capturedMap[secondParamMap["inspect"]]; !exists{
+        fmt.Printf("You havent caught this pokemon yet.\n")
+        return nil
+    }
+    fmt.Printf("Name: %s\nHeight: %d\nWeight %d\n", pokemon.Name, pokemon.Height, pokemon.Weight)
+
+    fmt.Println("Stats:")
+    for _, stat := range pokemon.Stats{
+        fmt.Printf(" -%s: %d\n", stat.Stat.Name, stat.Basestat)
+    }
+
+    fmt.Println("Types:")
+    for _, poketype := range pokemon.Types{
+        fmt.Printf(" -%s\n", poketype.Type.Name)
+    }
+    return nil
+}

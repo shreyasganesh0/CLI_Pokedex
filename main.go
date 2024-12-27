@@ -46,8 +46,12 @@ func init(){
              callback: commandExplore,
          },
      "catch":{name: "catch",
-             desc: "Try to capture a pokemon",
+             desc: "Try to capture a Pokemon",
              callback: commandCatch,
+         },
+     "inspect":{name: "inspect",
+             desc: "Get details for captured Pokemon",
+             callback: commandInspect,
          },
      }
  apiMap = map[string]*Pagination {
@@ -57,7 +61,8 @@ func init(){
     }
 secondParamMap = map[string]string{
     "explore": "",
-    "catch": "",    
+    "catch": "",   
+    "inspect": "",
     }
 cache = caching.CreateCache(5* time.Second) 
  
@@ -82,9 +87,11 @@ func main(){
                secondParamMap["explore"] = text[1] 
             }else if cmd.name == "catch"{
                 secondParamMap["catch"] = text[1]
+            }else if cmd.name == "inspect"{
+                secondParamMap["inspect"] = text[1]
             }
             if err := cmd.callback(); err != nil{
-                fmt.Printf("Error in command callback, %s \n %v ", text[0], err)
+                fmt.Printf("Error in command callback, %s\n%v\n", text[0], err)
             }
          } //this calls the command as per the first word in the user input
     }
